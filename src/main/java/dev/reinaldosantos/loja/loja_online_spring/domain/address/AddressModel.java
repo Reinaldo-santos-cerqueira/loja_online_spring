@@ -5,6 +5,8 @@ import java.io.Serializable;
 import dev.reinaldosantos.loja.loja_online_spring.domain.person.PersonModel;
 import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,6 +33,18 @@ public class AddressModel  implements Serializable{
     private String district;
     private String uf;
     private String city;
+    
+    @Enumerated(EnumType.STRING)
+    private AddressType addressType;
+
+    public AddressType getAddressTypeEnum() {
+        return addressType;
+    }
+
+    public void setAddressTypeEnum(AddressType addressType) {
+        this.addressType = addressType;
+    }
+
     @ManyToOne(targetEntity = PersonModel.class)
     @JoinColumn(name="person_id",nullable=false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "fk_person_address"))
     private PersonModel person;  
