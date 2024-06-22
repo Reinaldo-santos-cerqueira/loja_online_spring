@@ -1,10 +1,13 @@
 package dev.reinaldosantos.loja.loja_online_spring.domain.person;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import dev.reinaldosantos.loja.loja_online_spring.domain.address.AddressModel;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -12,24 +15,28 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "person")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@SequenceGenerator(name="seq_people",sequenceName = "seq_people",initialValue = 1, allocationSize = 1)
+@SequenceGenerator(name="seq_person",sequenceName = "seq_person",initialValue = 1, allocationSize = 1)
 public class PersonModel  implements Serializable{
+
     private static final long serialVersionUID = 1L;
 
-    @OneToMany(mappedBy = "person")
-    
-    private List<AddressModel> address;
-
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_people")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_person")
     private Long id;
 
     private String name;
     private String email;
     private String phone;
+
+    @OneToMany(mappedBy = "person", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<AddressModel> address = new ArrayList<AddressModel>();
+
+
     public static long getSerialversionuid() {
         return serialVersionUID;
     }
